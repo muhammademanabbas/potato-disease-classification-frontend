@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import styles from './Header.module.css';
 import logo from '../../assets/logo.png'
 
+
   export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(window.scrollY);
@@ -26,6 +27,10 @@ import logo from '../../assets/logo.png'
   const onActive = (isActive) => {
     return styles.link + (isActive ? ` ${styles.active}` : '');
   };
+
+  const closeNavBarHandler =()=>{
+    setIsOpen((prev)=>!prev)
+  }
 
   return (
     <header className={styles.header + onScroll(styles.scroll)}>
@@ -51,7 +56,10 @@ import logo from '../../assets/logo.png'
             <span className={styles.bar}></span>
           </button>
           <ul className={`${styles.ul} ${isOpen ? styles.open : ''}`}>
-            <li className={styles.li}>
+            <li 
+            onClick={closeNavBarHandler}
+            className={styles.li}
+            >
               <NavLink
                 to='/'
                 className={({ isActive }) => onActive(isActive)}
@@ -60,7 +68,9 @@ import logo from '../../assets/logo.png'
               </NavLink>
             </li>
 
-            <li className={styles.li}>
+            <li 
+            onClick={closeNavBarHandler}
+            className={styles.li}>
               <NavLink
                 to='/about'
                 className={({ isActive }) => onActive(isActive)}
@@ -69,23 +79,29 @@ import logo from '../../assets/logo.png'
               </NavLink>
             </li>
 
-            <li className={styles.li}>
+            <li 
+            onClick={closeNavBarHandler}
+            className={styles.li}
+            >
               <NavLink
                 to='/predict'
-                className={({ isActive }) => onActive(isActive)}
+                className={({ isActive }) =>  onActive(isActive)}
               >
                 Start Analysis
               </NavLink>
             </li>
 
-            <li className={styles.li}>
+            {/* <li 
+            onClick={closeNavBarHandler}
+            className={styles.li}
+            >
               <NavLink
                 to='/contact'
                 className={({ isActive }) => onActive(isActive)}
               >
                 Contact
               </NavLink>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 
 const HistoryPage = () => {
     const [history, setHistory] = useState([]);
@@ -52,7 +52,7 @@ const HistoryPage = () => {
     }
 
     return (
-        <div className="flex justify-center items-center min-h-screen p-5 bg-green-100 sm:p-10 font-inter">
+            <div className="flex justify-center items-center min-h-screen p-5 bg-green-100 sm:p-10 font-inter">
             <div className="container bg-white mt-[14vh] p-8 rounded-2xl shadow-xl max-w-4xl w-full flex flex-col gap-6">
                 <h1 className="text-3xl font-bold text-gray-800 text-center mb-4">
                     Classification History
@@ -81,12 +81,12 @@ const HistoryPage = () => {
                                         <p className="text-gray-700 text-sm mb-1">
                                             <strong className="text-gray-900">Result:</strong>{' '}
                                             <span className={`font-semibold ${entry.classificationResult.toLowerCase().includes('healthy') ? 'text-green-600' : 'text-red-600'}`}>
-                                                {entry.classificationResult}
+                                                {entry.classificationResult} 🥔
                                             </span>
                                         </p>
                                         {entry.confidence && (
                                             <p className="text-gray-700 text-sm">
-                                                <strong className="text-gray-900">Confidence:</strong> {entry.confidence}
+                                                <strong className="text-gray-900">Confidence:</strong> {entry.confidence} %
                                             </p>
                                         )}
                                     </div>
