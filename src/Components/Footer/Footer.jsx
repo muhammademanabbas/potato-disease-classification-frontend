@@ -46,14 +46,6 @@ const Footer = () => {
                 Classify Leaf
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to='/contact'
-                className={({ isActive }) => onActive(isActive)}
-              >
-                Contact
-              </NavLink>
-            </li>
           </ul>
         </div>
 

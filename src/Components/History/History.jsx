@@ -1,6 +1,6 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-const HistoryPage = () => {
+const History = () => {
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showClearAllConfirm, setShowClearAllConfirm] = useState(false); // State for clear all confirmation modal
@@ -52,7 +52,7 @@ const HistoryPage = () => {
     }
 
     return (
-            <div className="flex justify-center items-center min-h-screen p-5 bg-green-100 sm:p-10 font-inter">
+        <>
             <div className="container bg-white mt-[14vh] p-8 rounded-2xl shadow-xl max-w-4xl w-full flex flex-col gap-6">
                 <h1 className="text-3xl font-bold text-gray-800 text-center mb-4">
                     Classification History
@@ -136,8 +136,8 @@ const HistoryPage = () => {
                     </div>
                 </div>
             )}
-        </div>
+        </>
     );
 };
 
-export default HistoryPage;
+export default History;

@@ -3,19 +3,20 @@ import Header from "./Components/Header/Header.jsx";
 import Footer from "./Components/Footer/Footer.jsx";
 import LoadingBar from "react-top-loading-bar";
 import { useState, useEffect } from "react";
-import LocomotiveScroll from 'locomotive-scroll';
+// import LocomotiveScroll from 'locomotive-scroll';
+import ChatBot from "./Components/ChatBot/ChatBot.jsx";
+
 
 export default function Layout() {
-  const [progress, setProgress] = useState(0); // react-top-loading-bar state
+  const [progress, setProgress] = useState(0);
   
-  const locomotiveScroll = new LocomotiveScroll();
-  const navigation = useNavigation(); // React Router navigation hook
+  // const locomotiveScroll = new LocomotiveScroll();
+  const navigation = useNavigation();
 
   useEffect(() => {
-    console.log("Navigation State:", navigation.state);
 
     if (navigation.state === "loading") {
-      setProgress(30); // Start the progress bar from an initial value
+      setProgress(30);
     } else if (navigation.state === "idle") {
       setProgress(100);
     }
@@ -34,6 +35,7 @@ export default function Layout() {
       <Header />
       <Outlet /> {/* Outlet is for Dynamically Changing Component */}
       <Footer />
+      <ChatBot />
     </>
   );
 }

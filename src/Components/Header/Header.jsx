@@ -3,12 +3,18 @@ import { Link, NavLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import styles from './Header.module.css';
 import logo from '../../assets/logo.png'
-
+import { clearToken, checkToken } from '../../Token/token';
+import { handleSuccess } from '../../utils';
 
   export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(window.scrollY);
   const threshold = 160;
+  const isLoggedIn = checkToken();
+
+  // useEffect(()=>{
+
+  // },[isLoggedIn])
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -90,18 +96,35 @@ import logo from '../../assets/logo.png'
                 Start Analysis
               </NavLink>
             </li>
-
-            {/* <li 
+            {isLoggedIn ? (
+              <li 
             onClick={closeNavBarHandler}
             className={styles.li}
             >
               <NavLink
-                to='/contact'
-                className={({ isActive }) => onActive(isActive)}
+                to='/'
+                onClick={()=>{
+                  clearToken()
+                  handleSuccess('Logged out successfully!')
+                }}
               >
-                Contact
+                Logout
               </NavLink>
-            </li> */}
+            </li>
+            ) : (
+              <li 
+            onClick={closeNavBarHandler}
+            className={styles.li}
+            >
+              <NavLink
+                to='/login'
+                className={({ isActive }) =>  onActive(isActive)}
+              >
+                Sign In
+              </NavLink>
+            </li>
+            )}
+            
           </ul>
         </nav>
       </div>

@@ -1,14 +1,9 @@
-import { useState } from "react";
 import { Link } from 'react-router-dom';
 
-const App = () => {
-  const [db, setDb] = useState(null);
-  const [auth, setAuth] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [isAuthReady, setIsAuthReady] = useState(false);
+const Home = () => {
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4 bg-green-100">
+    <>
       {/* Main container for the content */}
       <div className="bg-white p-8 rounded-xl shadow-lg w-[90vw] lg:w-full lg:max-w-[70vw] text-center border border-gray-200 mt-[20vh]">
         {/* Header Section */}
@@ -16,13 +11,13 @@ const App = () => {
           🥔 Potato Disease Classification 🥔
         </h1>
         {/* Description Section */}
-        <p className="text-gray-700 text-lg mb-6 leading-relaxed">
+        <p className="text-gray-700 text-lg mb-6 leading-relaxed font-semibold">
           Welcome to the home page of the Potato Disease Classification!
           This system is designed to leverage advanced machine learning models
           to accurately identify and classify various diseases affecting potato
           crops.
         </p>
-        <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+        <p className="text-lg text-gray-700 mb-6 leading-relaxed font-semibold">
           Quickly and accurately identify common potato leaf diseases:{" "}
           <span className="font-semibold text-red-600">Early Blight</span>,{" "}
           <span className="font-semibold text-red-800">Late Blight</span>, and{" "}
@@ -127,15 +122,15 @@ const App = () => {
           <p className="text-gray-600">
             For API documentation and integration details, please refer to our
             comprehensive{" "}
-            <Link to='https://github.com/muhammademanabbas' className="text-green-600 hover:underline font-semibold">
+            <Link to='https://github.com/muhammademanabbas?tab=repositories' className="text-green-600 hover:underline font-semibold">
               documentation portal
             </Link>
             .
           </p>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default App;
+export default Home;

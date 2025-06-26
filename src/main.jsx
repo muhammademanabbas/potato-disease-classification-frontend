@@ -7,20 +7,24 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import Layout from "./Layout.jsx";
-import Home from "./pages/Home/Home.jsx";
+import Home from "./pages/HomePage/HomePage.jsx";
 import ImageUpload from "./pages/ImageUpload/ImageUpload.jsx";
-import Contact from "./pages/Contact/Contact.jsx";
-import About from "./pages/About/About.jsx";
-import PageNotFound from "./pages/PageNotFound/PageNotFound.jsx";
-import History from "./pages/History/History.jsx";
+import About from "./pages/AboutPAge/AboutPage.jsx";
+import PageNotFound from "./pages/NotFoundPage/NotFoundPage.jsx";
+import History from "./pages/HistoryPage/HistoryPage.jsx";
 import "./index.css";
+import LoginPage from "./pages/LoginPage/LoginPage.jsx";
+import SignupPage from "./pages/SignupPage/SignupPage.jsx";
+import { Provider } from "react-redux";
+import { store } from "./app/store.js";
+import PrivateRoute from "./Components/PrivateRoute.jsx";
+import LoginPrivateRoute from "./Components/LoginPrivateRoute.jsx";
 
 const simulateLoad = async (ms) => {
   await new Promise((resolve) => setTimeout(resolve, ms));
   return null; // Loaders should return something, even if it's null
 };
 
-/* Second Method to make a router */
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
@@ -28,7 +32,7 @@ const router = createBrowserRouter(
         path=""
         element={<Home />}
         loader={async () => {
-          console.log("Fetching Home Component!")
+          console.log("Fetching Home Component!");
           return simulateLoad(400); // Simulate an 800ms load for Home
         }}
       />
@@ -40,22 +44,36 @@ const router = createBrowserRouter(
         }}
       />
       <Route
+        path="/predict/history"
+        element={<PrivateRoute element={<History />} />}
+        loader={async () => {
+          return simulateLoad(400);
+        }}
+      />
+      <Route
         path="about"
         element={<About />}
         loader={async () => {
           return simulateLoad(400);
         }}
       />
-       {/* <Route
-        path="contact"
-        element={<Contact />}
+      <Route
+        path="/login"
+        element={<LoginPrivateRoute element={<LoginPage />} />}
         loader={async () => {
           return simulateLoad(400);
         }}
-      />  */}
+      />
       <Route
-        path="history"
-        element={<History />}
+        path="/signin"
+        element={<LoginPrivateRoute element={<LoginPage />} />}
+        loader={async () => {
+          return simulateLoad(400);
+        }}
+      />
+      <Route
+        path="/signup"
+        element={<LoginPrivateRoute element={<SignupPage />} />}
         loader={async () => {
           return simulateLoad(400);
         }}
@@ -67,6 +85,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
