@@ -96,6 +96,7 @@ import { handleSuccess } from '../../utils';
                 Start Analysis
               </NavLink>
             </li>
+            
             {isLoggedIn ? (
               <li 
             onClick={closeNavBarHandler}

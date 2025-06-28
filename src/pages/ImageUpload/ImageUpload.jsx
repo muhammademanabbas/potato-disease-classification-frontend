@@ -52,41 +52,6 @@ const StartAnalysis = () => {
     }
   }, [selectedFile]); // This effect runs whenever `selectedFile` changes
 
-  // Saves a classification entry to localStorage
-  const saveClassificationToHistory = (
-    imageSrc,
-    fileName,
-    result,
-    confidence
-  ) => {
-    const newEntry = {
-      id: Date.now().toString(), // Simple unique ID based on timestamp
-      timestamp: new Date().toISOString(), // ISO string for easy sorting and display
-      imageURL: imageSrc, // Base64 string of the image for preview
-      originalFileName: fileName,
-      classificationResult: result,
-      confidence: confidence,
-    };
-
-    // Get existing history from localStorage, or initialize an empty array
-    const existingHistory =
-      JSON.parse(localStorage.getItem("potatoLeafHistory")) || [];
-
-    // Add the new entry to the beginning of the array (most recent first)
-    const updatedHistory = [newEntry, ...existingHistory];
-
-    // Save updated history back to localStorage
-    try {
-      localStorage.setItem("potatoLeafHistory", JSON.stringify(updatedHistory));
-    } catch (e) {
-      // Handle potential localStorage full errors
-      console.error("Error saving to localStorage:", e);
-      showCustomModal(
-        "Could not save classification history. Storage might be full."
-      );
-    }
-  };
-
   // Handler for when a file is selected via input or drag-and-drop
   const handleFileChange = (file) => {
     if (file && file.type.startsWith("image/")) {
@@ -122,6 +87,81 @@ const StartAnalysis = () => {
     }
   };
 
+  // Saves a classification entry to localStorage
+  // const saveClassificationToHistory = (
+  //   imageSrc,
+  //   fileName,
+  //   result,
+  //   confidence
+  // ) => {
+  //   const newEntry = {
+  //     id: Date.now().toString(), // Simple unique ID based on timestamp
+  //     timestamp: new Date().toISOString(), // ISO string for easy sorting and display
+  //     imageURL: imageSrc, // Base64 string of the image for preview
+  //     originalFileName: fileName,
+  //     classificationResult: result,
+  //     confidence: confidence,
+  //   };
+
+  //   // Get existing history from localStorage, or initialize an empty array
+  //   const existingHistory =
+  //     JSON.parse(localStorage.getItem("potatoLeafHistory")) || [];
+
+  //   // Add the new entry to the beginning of the array (most recent first)
+  //   const updatedHistory = [newEntry, ...existingHistory];
+
+  //   // Save updated history back to localStorage
+  //   try {
+  //     localStorage.setItem("potatoLeafHistory", JSON.stringify(updatedHistory));
+  //   } catch (e) {
+  //     // Handle potential localStorage full errors
+  //     console.error("Error saving to localStorage:", e);
+  //     showCustomModal(
+  //       "Could not save classification history. Storage might be full."
+  //     );
+  //   }
+  // };
+  
+  const SaveHistoryRequestToBackend = async (
+    prediction,
+    confidence,
+    originalFileName
+  ) => {
+    
+    let formData = new FormData();
+    formData.append("potatoleafImage", selectedFile);
+    formData.append("diseaseDetected", prediction); // Add prediction to form data
+    formData.append("confidence", confidence); // Add confidence to form data
+    formData.append("originalFileName", originalFileName); // Add originalFileName to form data
+    console.log("Form Data Set", formData);
+    const bearerToken = checkToken();
+    const apiUrl = import.meta.env.VITE_SAVE_USER_HISTORY_URL;
+    try {
+      const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json(); // Attempt to parse error details
+      console.error(
+        `Failed to save history. HTTP Status: ${response.status}`,
+        `Error details:`, errorData
+      );
+      throw new Error(`Server error: ${response.status} ${response.statusText} - ${errorData.message || 'Unknown error'}`);
+    }
+    const result = await response.json(); // Parse the successful response
+    console.log("History saved successfully:", result.historyEntry.base64Image);
+    return result; // Return the result of the successful operation
+    } catch (error) {
+    console.error("Error saving history request to backend:", error);
+    throw error; // Re-throw the error for further handling by the calling function
+  }
+  };
+
   // Classification logic (integrated from user's provided predictHandler)
   const classifyImage = async () => {
     const file = selectedFile; // Get the selected file from the state
@@ -136,7 +176,7 @@ const StartAnalysis = () => {
       formData.append("file", file); // Append the file to FormData for API submission
 
       try {
-        const apiUrl = "http://localhost:8000/predict"; // Your backend API URL
+        const apiUrl = import.meta.env.VITE_REACT_APP_API_URL; // Your backend API URL
 
         const response = await fetch(apiUrl, {
           method: "POST",
@@ -146,6 +186,7 @@ const StartAnalysis = () => {
         if (response.ok) {
           const result = await response.json(); // Parse the JSON response from the API
           setApiResponseData(result); // Store the raw API response
+          console.log("Fast Api Response", result);
 
           const predictedDisease = result.prediction || "Unknown Disease";
           const confidenceScore = result.accuracy
@@ -155,16 +196,21 @@ const StartAnalysis = () => {
           setPrediction(predictedDisease);
           setAccuracy(confidenceScore);
 
-          console.log("API response:", result);
-
           // --- Save to History after successful prediction ---
           // Use imagePreviewUrl which is the Base64 representation of the image
-          saveClassificationToHistory(
-            imagePreviewUrl,
-            file.name,
+          if(checkToken()){
+            SaveHistoryRequestToBackend(
             predictedDisease,
-            confidenceScore
+            confidenceScore,
+            file.name
           );
+          }
+          // saveClassificationToHistory(
+          //   imagePreviewUrl,
+          //   file.name,
+          //   predictedDisease,
+          //   confidenceScore
+          // );
           // --- End History Save ---
         } else {
           const errorText = await response.text(); // Get error message from response
@@ -189,7 +235,6 @@ const StartAnalysis = () => {
         setIsLoading(false); // Reset loading state
       }
     } else {
-      console.log("No file selected for prediction.");
       setPrediction("No file selected.");
       setAccuracy("N/A");
       setIsLoading(false);
@@ -233,29 +278,29 @@ const StartAnalysis = () => {
       <div className="relative flex justify-center items-center min-h-screen p-5 bg-green-100 sm:p-10 font-inter">
         <div className="container bg-white mt-[14vh] p-8 rounded-2xl shadow-xl max-w-xl w-full flex flex-col gap-6">
           {/* History Button - Now a button to handle logic */}
-        <button
-          onClick={handleHistoryClick}
-          className=" flex items-center justify-end gap-1 text-green-700 transition-colors duration-200 rounded-md  hover:text-gray-800 hover:border-green-700"
-          title="View Classification History"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            className="w-6 h-6"
+          <button
+            onClick={handleHistoryClick}
+            className=" flex items-center justify-end gap-1 text-green-700 transition-colors duration-200 rounded-md  hover:text-gray-800 hover:border-green-700"
+            title="View Classification History"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-          {/* <span className="text-sm font-semibold hidden sm:inline">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            {/* <span className="text-sm font-semibold hidden sm:inline">
             History
           </span> */}
-        </button>
+          </button>
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold text-gray-800 text-center flex-grow">
               🥔 Potato Leaf Disease Classifier 🥔
@@ -376,7 +421,6 @@ const StartAnalysis = () => {
             </div>
           )}
         </div>
-        
 
         {/* Custom Modal for Alerts */}
         {showModal && (
@@ -426,7 +470,6 @@ const StartAnalysis = () => {
             </div>
           </div>
         )}
-        
       </div>
     </>
   );

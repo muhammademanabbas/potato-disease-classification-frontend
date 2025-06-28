@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { checkToken } from '../../Token/token';
 
 const authSlice = createSlice({
   name: 'auth', 
   initialState: {
-    isLoggedIn: false,
+    isLoggedIn: checkToken() ? true : false, // Check if token exists to set initial state
   },
   reducers: {
     login: (state, action) => {
