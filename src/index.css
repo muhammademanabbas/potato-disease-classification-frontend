@@ -7,3 +7,94 @@
   background-color: #15803D;
   color: #ffffff;
 }
+/* Ensure this CSS file is imported AFTER 'react-toastify/dist/ReactToastify.css' */
+
+/* Target the main container that holds all toasts */
+.Toastify__toast-container {
+    /* These styles are intended for the overall container of toasts */
+    display: flex;
+    flex-direction: column;
+    gap: 1vw; 
+
+    position: fixed;
+    top: 20px; 
+    right: 20px; 
+    z-index: 9999;
+    pointer-events: none; 
+}
+
+.Toastify__toast {
+    background-color: #f0f0f0 !important;
+    color: #333 !important;
+    border-radius: 30px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    overflow: hidden; 
+    padding: 24px; 
+
+    width: 380px;
+    max-width: 90vw; 
+    pointer-events: auto; 
+}
+
+.Toastify__progress-bar {
+    height: 10px !important;
+    border-radius: 0 0 30px 30px !important;
+}
+
+.Toastify__close-button {
+    margin-right: 8px;
+
+    align-self: flex-start;
+
+    color: #555;
+    opacity: 0.8;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.Toastify__close-button:hover {
+    opacity: 1;
+    color: #000;
+}
+
+
+/* --- Responsive Adjustments (Media Queries) --- */
+
+@media (max-width: 768px) { /* Tablets and smaller */
+    .Toastify__toast-container {
+        /* Adjust position for mobile */
+        top: 0 !important; /* Move to top of screen */
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important; /* Take full width */
+        align-items: center; /* Center toasts horizontally */
+        padding: 10px 0; /* Add some vertical padding */
+        gap: 2vh; /* Reduce gap on smaller screens */
+    }
+
+    .Toastify__toast {
+        width: 90% !important; /* Make toasts 90% width of viewport */
+        max-width: 400px; /* But don't let them get too wide */
+        padding: 18px; /* Slightly less padding */
+        border-radius: 20px !important; /* Adjust border-radius for mobile */
+    }
+
+    .Toastify__progress-bar {
+        border-radius: 0 0 20px 20px !important; /* Match toast's new radius */
+    }
+
+    .Toastify__close-button {
+        margin-right: 5px; /* Example: slightly less margin on mobile */
+        /* If you added margin-top, adjust it here too */
+        /* margin-top: 5px; */
+    }
+}
+
+@media (max-width: 480px) { /* Smartphones */
+    .Toastify__toast-container {
+        gap: 1.5vh;
+    }
+    .Toastify__toast {
+        padding: 15px;
+        font-size: 0.9em; /* Smaller font for text content */
+    }
+}

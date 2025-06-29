@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const Home = () => {
+
 
   return (
     <>
@@ -10,11 +11,13 @@ const Home = () => {
         <h1 className="text-4xl font-extrabold text-green-700 mb-4 rounded-md">
           🥔 Potato Disease Classification 🥔
         </h1>
+        
+
         {/* Description Section */}
         <p className="text-gray-700 text-lg mb-6 leading-relaxed font-semibold">
-          Welcome to the home page of the Potato Disease Classification!
-          This system is designed to leverage advanced machine learning models
-          to accurately identify and classify various diseases affecting potato
+          Welcome to the home page of the Potato Disease Classification! This
+          system is designed to leverage advanced machine learning models to
+          accurately identify and classify various diseases affecting potato
           crops.
         </p>
         <p className="text-lg text-gray-700 mb-6 leading-relaxed font-semibold">
@@ -115,14 +118,21 @@ const Home = () => {
             To utilize this backend, your frontend application can send image
             data to the designated API endpoint. The backend will then process
             the image and return the predicted disease label and confidence
-            score <Link to='/predict' className="text-green-600 hover:underline font-semibold">
+            score{" "}
+            <Link
+              to="/predict"
+              className="text-green-600 hover:underline font-semibold"
+            >
               Try it now.
             </Link>
           </p>
           <p className="text-gray-600">
             For API documentation and integration details, please refer to our
             comprehensive{" "}
-            <Link to='https://github.com/muhammademanabbas?tab=repositories' className="text-green-600 hover:underline font-semibold">
+            <Link
+              to="https://github.com/muhammademanabbas?tab=repositories"
+              className="text-green-600 hover:underline font-semibold"
+            >
               documentation portal
             </Link>
             .

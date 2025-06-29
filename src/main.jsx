@@ -12,13 +12,15 @@ import ImageUpload from "./pages/ImageUpload/ImageUpload.jsx";
 import About from "./pages/AboutPAge/AboutPage.jsx";
 import PageNotFound from "./pages/NotFoundPage/NotFoundPage.jsx";
 import History from "./pages/HistoryPage/HistoryPage.jsx";
-import "./index.css";
+
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage/SignupPage.jsx";
 import { Provider } from "react-redux";
 import { store } from "./app/store.js";
 import PrivateRoute from "./Components/PrivateRoute.jsx";
 import LoginPrivateRoute from "./Components/LoginPrivateRoute.jsx";
+import "./index.css";
+
 
 const simulateLoad = async (ms) => {
   await new Promise((resolve) => setTimeout(resolve, ms));

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 // The Chatbot component provides a floating chat icon that, when clicked,
 // opens a chat interface for interaction with an AI bot.
 
@@ -8,6 +9,8 @@ const ChatBot = () => {
   const [chatMessages, setChatMessages] = useState([]); // Stores the history of chat messages
   const [currentMessage, setCurrentMessage] = useState(""); // Stores the current message being typed by the user
   const [isBotTyping, setIsBotTyping] = useState(false); // Indicates if the bot is currently generating a response
+
+  const username = useSelector(state=>state.auth.username)
 
   // Refs for DOM manipulation, particularly for auto-scrolling and input focusing
   const chatMessagesEndRef = useRef(null); // Reference to the bottom of the chat messages area for scrolling
@@ -296,6 +299,14 @@ const ChatBot = () => {
 
         {/* Chat Messages Display Area */}
         <div className="chat-messages flex-grow p-4 overflow-y-auto bg-gray-50">
+          {username && (
+          <div className="flex justify-center items-center">
+            <p className="text-lg text-gray-600 mb-4">
+              Welcome,{" "}
+              <span className="font-semibold text-green-600">{username+ "! "}&#x1F44B;</span>
+            </p>
+          </div>
+        )}
           {chatMessages.length === 0 && !isBotTyping && (
             // Message displayed when no chat history exists
             <div className="text-center text-gray-500 italic mt-4">

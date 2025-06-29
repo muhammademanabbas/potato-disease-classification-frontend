@@ -75,6 +75,8 @@ const Signup = () => {
 
         setTimeout(() => {
           navigate("/");
+           setIsLoading(false);
+
         }, 1000);
       } else if (error) {
         console.error("API Error:", error); // Use console.error for errors
@@ -84,13 +86,16 @@ const Signup = () => {
             ? error.details[0].message
             : error.message || "An unknown error occurred during registration.";
         handleError(errorMessage);
+         setIsLoading(false);
       } else {
         // This covers cases where success is false but no explicit error object is present
         handleError(message || "Registration failed. Please try again.");
+         setIsLoading(false);
       }
     } catch (err) {
       console.error("Network or unexpected error:", err); // Log the full error object
       handleError("A network error occurred. Please try again later."); // Generic error message for network issues
+      setIsLoading(false);
     } finally {
       setIsLoading(false); // Ensure loading indicator is hidden after API call completes (success or failure)
     }

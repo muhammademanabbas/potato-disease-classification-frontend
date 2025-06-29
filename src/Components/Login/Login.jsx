@@ -27,32 +27,35 @@ const Login = () => {
   }, [isLoggedInReduxState]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    setMessage({ text: "", type: "" }); // Clear previous messages
-    setIsLoading(true); // Show loading indicator
+  e.preventDefault(); // Prevent default form submission behavior
+  setMessage({ text: "", type: "" }); // Clear previous messages
+  setIsLoading(true); // Show loading indicator
 
-    // Basic validation
-    if (!email || !password) {
-      setMessage({
-        text: "Please enter both email and password.",
-        type: "error",
-      });
-      setIsLoading(false);
-      return;
-    }
-    try {
-      const url = import.meta.env.VITE_AUTH_USER_LOG_IN;
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+  // Basic validation
+  if (!email || !password) {
+    setMessage({
+      text: "Please enter both email and password.",
+      type: "error",
+    });
+    setIsLoading(false);
+    return;
+  }
+  try {
+    const url = import.meta.env.VITE_AUTH_USER_LOG_IN;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response) {
       const result = await response.json();
-      console.log(result);
+      // Improved console.log for successful response parsing
+      console.log("handleSubmit (API Response Result):", result);
       const { success, message, error, Token, name } = result;
-      console.log("Success",success);
+
       if (success) {
         setToken(Token, name);
         const isUser = localStorage.getItem("isLoggedIn") === "true";
@@ -60,18 +63,32 @@ const Login = () => {
         handleSuccess(message);
         setTimeout(() => {
           navigate("/");
+          setIsLoading(false);
         }, 1000);
       } else if (error) {
-        console.log(error);
+        // Improved console.log for API error object
+        console.log("handleSubmit (API Error Object):", error);
         const details = error?.details[0].message;
         handleError(details);
+        setIsLoading(false);
       } else if (!success) {
+        // This handles cases where success is false but no specific 'error' object is present
         handleError(message);
+        setIsLoading(false);
       }
-    } catch (err) {
-      handleError(err);
+    } else {
+      // This case should ideally be caught by the catch block, but it's good for robustness.
+      console.error("handleSubmit (Network Error): No response received from API.");
+      handleError("Network error: Could not connect to the server.");
+      setIsLoading(false);
     }
-  };
+  } catch (err) {
+    // Improved error handling for network or unexpected issues
+    console.error("handleSubmit (Catch Block Error):", err);
+    handleError("An unexpected error occurred. Please try again.");
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border mt-[14vh] border-gray-100 transform transition-all duration-300 hover:scale-[1.01]">

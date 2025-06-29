@@ -51,7 +51,6 @@ import { handleSuccess } from '../../utils';
             alt='logo'
           />
         </Link>
-
         <nav className={`${styles.nav} ${isOpen ? styles.open : ''}`}>
           <button
             className={`${styles.hamburger} ${isOpen ? styles.open : ''}`}
