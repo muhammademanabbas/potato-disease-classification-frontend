@@ -5,12 +5,16 @@ import styles from './Header.module.css';
 import logo from '../../assets/logo.png'
 import { clearToken, checkToken } from '../../Token/token';
 import { handleSuccess } from '../../utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearUserHistory } from '../../Features/history/historySlice';
 
   export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(window.scrollY);
   const threshold = 160;
   const isLoggedIn = checkToken();
+  const dispatch = useDispatch();
+  
 
   // useEffect(()=>{
 
@@ -105,6 +109,7 @@ import { handleSuccess } from '../../utils';
                 to='/'
                 onClick={()=>{
                   clearToken()
+                  dispatch(clearUserHistory())
                   handleSuccess('Logged out successfully!')
                 }}
               >

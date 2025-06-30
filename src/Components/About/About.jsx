@@ -92,7 +92,6 @@ function About() {
           </p>
         </section>
 
-        {/* Technologies Used */}
         <section>
           <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 flex items-center">
             <svg
@@ -113,23 +112,50 @@ function About() {
             Technologies Used
           </h3>
           <ul className="list-disc list-inside text-gray-700 space-y-2 text-base sm:text-lg">
-            <li>
-              <span className="font-semibold">Frontend:</span> React.js for a
-              dynamic and interactive user interface.
+            <li className="flex"> {/* Add flex to the li */}
+              <span className="flex-shrink-0">•</span> {/* Explicit bullet, prevent shrinking */}
+              <span className="ml-2"> {/* Margin to separate bullet and text */}
+                <span className="font-semibold">Frontend:</span> React.js for a
+                dynamic and interactive user interface.
+              </span>
             </li>
-            <li>
-              <span className="font-semibold">Styling:</span> Tailwind CSS for
-              responsive and utility-first styling.
+            <li className="flex">
+              <span className="flex-shrink-0">•</span>
+              <span className="ml-2">
+                <span className="font-semibold">Styling:</span> Tailwind CSS for
+                responsive and utility-first styling.
+              </span>
             </li>
-            <li>
-              <span className="font-semibold">Machine Learning:</span> Utilizing
-              a deep learning model (e.g., Convolutional Neural Networks built
-              with TensorFlow/Keras) for image classification.
+            <li className="flex">
+              <span className="flex-shrink-0">•</span>
+              <span className="ml-2">
+                <span className="font-semibold">Machine Learning:</span> Utilizing
+                a deep learning model (e.g., Convolutional Neural Networks built
+                with TensorFlow/Keras) for image classification.
+              </span>
             </li>
-            <li>
-              <span className="font-semibold">Backend:</span> Python (
-              <span className="font-semibold">FastAPI</span>) for serving the ML
-              model and API endpoints.
+            <li className="flex">
+              <span className="flex-shrink-0">•</span>
+              <span className="ml-2">
+                <span className="font-semibold">Backend (ML Model Serving):</span> Python (
+                <span className="font-semibold">FastAPI</span>) for serving the ML
+                model and related API endpoints.
+              </span>
+            </li>
+            <li className="flex">
+              <span className="flex-shrink-0">•</span>
+              <span className="ml-2">
+                <span className="font-semibold">Backend (User Management & History):</span> Node.js (
+                <span className="font-semibold">Express.js</span>) for robust user authentication,
+                authorization, and managing classification history (CRUD operations).
+              </span>
+            </li>
+            <li className="flex">
+              <span className="flex-shrink-0">•</span>
+              <span className="ml-2">
+                <span className="font-semibold">Database:</span> MongoDB for flexible and scalable data storage
+                for user information and classification history.
+              </span>
             </li>
           </ul>
         </section>
