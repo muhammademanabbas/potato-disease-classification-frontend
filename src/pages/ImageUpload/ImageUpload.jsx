@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate instead of useNavigation
-import { checkToken } from "../../Token/token"; // Import your checkToken function
+import { useNavigate } from "react-router-dom";
+import { checkToken } from "../../Token/token";
 
 const StartAnalysis = () => {
   // State variables for managing the component's UI and data
@@ -34,7 +34,7 @@ const StartAnalysis = () => {
   // useEffect hook to handle file selection and generate preview URL
   useEffect(() => {
     if (selectedFile) {
-      const reader = new FileReader(); // Create a new FileReader instance
+      const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreviewUrl(reader.result); // Set the image preview URL
         setIsButtonDisabled(false); // Enable the classify button once an image is loaded
@@ -87,47 +87,12 @@ const StartAnalysis = () => {
     }
   };
 
-  // Saves a classification entry to localStorage
-  // const saveClassificationToHistory = (
-  //   imageSrc,
-  //   fileName,
-  //   result,
-  //   confidence
-  // ) => {
-  //   const newEntry = {
-  //     id: Date.now().toString(), // Simple unique ID based on timestamp
-  //     timestamp: new Date().toISOString(), // ISO string for easy sorting and display
-  //     imageURL: imageSrc, // Base64 string of the image for preview
-  //     originalFileName: fileName,
-  //     classificationResult: result,
-  //     confidence: confidence,
-  //   };
-
-  //   // Get existing history from localStorage, or initialize an empty array
-  //   const existingHistory =
-  //     JSON.parse(localStorage.getItem("potatoLeafHistory")) || [];
-
-  //   // Add the new entry to the beginning of the array (most recent first)
-  //   const updatedHistory = [newEntry, ...existingHistory];
-
-  //   // Save updated history back to localStorage
-  //   try {
-  //     localStorage.setItem("potatoLeafHistory", JSON.stringify(updatedHistory));
-  //   } catch (e) {
-  //     // Handle potential localStorage full errors
-  //     console.error("Error saving to localStorage:", e);
-  //     showCustomModal(
-  //       "Could not save classification history. Storage might be full."
-  //     );
-  //   }
-  // };
-  
   const SaveHistoryRequestToBackend = async (
     prediction,
     confidence,
     originalFileName
   ) => {
-    
+
     let formData = new FormData();
     formData.append("potatoleafImage", selectedFile);
     formData.append("diseaseDetected", prediction); // Add prediction to form data
@@ -138,28 +103,28 @@ const StartAnalysis = () => {
     const apiUrl = import.meta.env.VITE_SAVE_USER_HISTORY_URL;
     try {
       const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-      body: formData,
-    });
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+        },
+        body: formData,
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json(); // Attempt to parse error details
-      console.error(
-        `Failed to save history. HTTP Status: ${response.status}`,
-        `Error details:`, errorData
-      );
-      throw new Error(`Server error: ${response.status} ${response.statusText} - ${errorData.message || 'Unknown error'}`);
-    }
-    const result = await response.json(); // Parse the successful response
-    console.log("History saved successfully:", result.historyEntry.base64Image);
-    return result; // Return the result of the successful operation
+      if (!response.ok) {
+        const errorData = await response.json(); // Attempt to parse error details
+        console.error(
+          `Failed to save history. HTTP Status: ${response.status}`,
+          `Error details:`, errorData
+        );
+        throw new Error(`Server error: ${response.status} ${response.statusText} - ${errorData.message || 'Unknown error'}`);
+      }
+      const result = await response.json(); // Parse the successful response
+      console.log("History saved successfully:", result.historyEntry.base64Image);
+      return result; // Return the result of the successful operation
     } catch (error) {
-    console.error("Error saving history request to backend:", error);
-    throw error; // Re-throw the error for further handling by the calling function
-  }
+      console.error("Error saving history request to backend:", error);
+      throw error; // Re-throw the error for further handling by the calling function
+    }
   };
 
   // Classification logic (integrated from user's provided predictHandler)
@@ -197,21 +162,13 @@ const StartAnalysis = () => {
           setAccuracy(confidenceScore);
 
           // --- Save to History after successful prediction ---
-          // Use imagePreviewUrl which is the Base64 representation of the image
-          if(checkToken()){
+          if (checkToken()) {
             SaveHistoryRequestToBackend(
-            predictedDisease,
-            confidenceScore,
-            file.name
-          );
+              predictedDisease,
+              confidenceScore,
+              file.name
+            );
           }
-          // saveClassificationToHistory(
-          //   imagePreviewUrl,
-          //   file.name,
-          //   predictedDisease,
-          //   confidenceScore
-          // );
-          // --- End History Save ---
         } else {
           const errorText = await response.text(); // Get error message from response
           console.error(`API Error: ${response.status} - ${errorText}`);
@@ -297,9 +254,6 @@ const StartAnalysis = () => {
                 d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
               />
             </svg>
-            {/* <span className="text-sm font-semibold hidden sm:inline">
-            History
-          </span> */}
           </button>
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold text-gray-800 text-center flex-grow">
@@ -310,11 +264,10 @@ const StartAnalysis = () => {
           {/* File Upload Section */}
           <div
             className={`file-input-wrapper relative border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-200 ease-in-out
-                           ${
-                             isDraggingOver
-                               ? "animated-drag-border" // Apply custom animated class when dragging over
-                               : "border-gray-300 hover:border-green-400 hover:bg-green-50"
-                           }`}
+                           ${isDraggingOver
+                ? "animated-drag-border" // Apply custom animated class when dragging over
+                : "border-gray-300 hover:border-green-400 hover:bg-green-50"
+              }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
@@ -404,7 +357,7 @@ const StartAnalysis = () => {
           {/* Loading Indicator */}
           {isLoading && (
             <div className="text-green-600 text-lg mb-2 text-center animate-pulse flex items-center justify-center">
-              <div className="loader border-4 border-t-4 border-green-500 rounded-full w-6 h-6 mr-2"></div>
+              <div className="predict-loader border-4 border-t-4 border-green-500 rounded-full w-6 h-6 mr-2"></div>
               Processing image...
             </div>
           )}

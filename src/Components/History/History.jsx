@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserHistoryManually,
-  markHistoryForRefresh,
-  clearUserHistory, // Keep this for optimistic UI or immediate local clear
   deleteHistoryEntryManually, // Import new action for single delete
   clearAllHistoryManually, // Import new action for clear all
 } from "../../Features/history/historySlice"; // Adjust path as needed
@@ -18,33 +16,49 @@ function History() {
   // Fetch history on component mount or when it needs refresh
   useEffect(() => {
     fetchUserHistoryManually(dispatch);
-  }, []); // Depend on dispatch, status, and userHistory.length
+  }, []);
 
   if (status === "loading" || status === "deleting" || status === "clearing") {
     if (status === "clearing") {
       return (
-        <div>
-          <div class="progrss_bar_loader"></div>
+        <div className="loader flex justify-center flex-col items-center">
+          <div className="panWrapper">
+            <div className="pan">
+              <div className="food"></div>
+              <div className="panBase"></div>
+              <div className="panHandle"></div>
+            </div>
+            <div className="panShadow"></div>
+          </div>
           <div className="mt-6">Clearing History...</div>
         </div>
       );
     }
-    return <div class="progrss_bar_loader"></div>;
+    return (
+      <div className="loader">
+          <div className="panWrapper">
+            <div className="pan">
+              <div className="food"></div>
+              <div className="panBase"></div>
+              <div className="panHandle"></div>
+            </div>
+            <div className="panShadow"></div>
+          </div>
+        </div>
+    );
   }
 
   if (status === "failed") {
     return (
-      <div className="text-center text-red-600 text-lg py-10">
+      <strong className="text-center text-red-600 text-lg py-10">
         Error: {error}
-      </div>
+      </strong>
     );
   }
 
   // Handles deleting a single entry from history
   const handleDeleteEntry = (idToDelete) => {
-    // Dispatch the async action to delete from backend and update Redux state
     dispatch(deleteHistoryEntryManually(dispatch, idToDelete));
-    // The Redux slice reducer (deleteEntrySuccess) will handle removing the item from userHistory
   };
 
   // Prepares to show the clear all confirmation modal
@@ -57,7 +71,6 @@ function History() {
     setShowClearAllConfirm(false);
     // Dispatch the async action to clear all from backend and update Redux state
     dispatch(clearAllHistoryManually(dispatch));
-    // The Redux slice reducer (clearUserHistory) will handle clearing the local state
   };
 
   // Cancels clearing all history
@@ -88,14 +101,11 @@ function History() {
             </button>
             <div className="history-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {userHistory.map((entry) => {
-                // Use entry._id from the backend as the key for better React performance
-                // Ensure classificationResult is a string before calling toLowerCase()
                 const classificationText = String(entry.diseaseDetected || "");
                 const isHealthy = classificationText
                   .toLowerCase()
                   .includes("healthy");
                 const imageDataUrl = `data:image/jpeg;base64,${entry.base64Image}`; // Use imageUrl from backend response
-
                 return (
                   <div
                     key={entry._id}
@@ -129,7 +139,6 @@ function History() {
                         <p className="text-gray-700 text-sm">
                           <strong className="text-gray-900">Confidence:</strong>{" "}
                           {entry.confidence.toFixed(2)} %{" "}
-                          {/* Format confidence */}
                         </p>
                       )}
                     </div>

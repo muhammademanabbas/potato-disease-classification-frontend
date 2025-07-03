@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff } from "../Icons/Icons";
 import Button from "../Button/Button";
-import { login } from "../../Features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { handleError, handleSuccess } from "../../utils";
 import { setToken } from "../../Token/token";
+import { login } from "../../Features/auth/authSlice";
 
 const Login = () => {
   // State variables for form fields
@@ -18,16 +18,10 @@ const Login = () => {
   // State for loading indicator
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const isLoggedInReduxState = useSelector((state) => state.auth.isLoggedIn);
-
-  useEffect(() => {
-    console.log("Redux isLoggedIn state changed to:", isLoggedInReduxState);
-  }, [isLoggedInReduxState]);
+  const dispatch = useDispatch()
 
   const handleSubmit = async (e) => {
-  e.preventDefault(); // Prevent default form submission behavior
+  e.preventDefault();
   setMessage({ text: "", type: "" }); // Clear previous messages
   setIsLoading(true); // Show loading indicator
 
@@ -52,32 +46,27 @@ const Login = () => {
 
     if (response) {
       const result = await response.json();
-      // Improved console.log for successful response parsing
       console.log("handleSubmit (API Response Result):", result);
       const { success, message, error, Token, name } = result;
 
       if (success) {
         setToken(Token, name);
-        const isUser = localStorage.getItem("isLoggedIn") === "true";
-        dispatch(login(isUser));
         handleSuccess(message);
+        dispatch(login({name: result.name, email: result.email }))
         setTimeout(() => {
           navigate("/");
           setIsLoading(false);
         }, 1000);
       } else if (error) {
-        // Improved console.log for API error object
         console.log("handleSubmit (API Error Object):", error);
         const details = error?.details[0].message;
         handleError(details);
         setIsLoading(false);
       } else if (!success) {
-        // This handles cases where success is false but no specific 'error' object is present
         handleError(message);
         setIsLoading(false);
       }
     } else {
-      // This case should ideally be caught by the catch block, but it's good for robustness.
       console.error("handleSubmit (Network Error): No response received from API.");
       handleError("Network error: Could not connect to the server.");
       setIsLoading(false);
@@ -153,7 +142,7 @@ const Login = () => {
             />
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
               <button
-                type="button" // Important: type="button" to prevent form submission
+                type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="p-1 -mr-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 aria-label={showPassword ? "Hide password" : "Show password"}
@@ -164,14 +153,7 @@ const Login = () => {
               </button>
             </div>
           </div>
-          <div className="mt-6 text-end">
-            <Link
-              to="#"
-              className="font-medium text-green-700 hover:text-green-800 transition-colors duration-200 underline"
-            >
-              Forgot your password?
-            </Link>
-          </div>
+          
         </div>
 
         {/* Message Display */}

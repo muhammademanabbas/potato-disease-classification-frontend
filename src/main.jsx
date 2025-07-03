@@ -10,9 +10,9 @@ import Layout from "./Layout.jsx";
 import Home from "./pages/HomePage/HomePage.jsx";
 import ImageUpload from "./pages/ImageUpload/ImageUpload.jsx";
 import About from "./pages/AboutPAge/AboutPage.jsx";
+import AccountPage from "./pages/AccountPage/AccountPage.jsx";
 import PageNotFound from "./pages/NotFoundPage/NotFoundPage.jsx";
 import History from "./pages/HistoryPage/HistoryPage.jsx";
-
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage/SignupPage.jsx";
 import { Provider } from "react-redux";
@@ -20,7 +20,6 @@ import { store } from "./app/store.js";
 import PrivateRoute from "./Components/PrivateRoute.jsx";
 import LoginPrivateRoute from "./Components/LoginPrivateRoute.jsx";
 import "./index.css";
-
 
 const simulateLoad = async (ms) => {
   await new Promise((resolve) => setTimeout(resolve, ms));
@@ -39,6 +38,20 @@ const router = createBrowserRouter(
         }}
       />
       <Route
+        path="about"
+        element={<About />}
+        loader={async () => {
+          return simulateLoad(400);
+        }}
+      />
+      <Route
+        path="/account"
+        element={<PrivateRoute element={<AccountPage />} />}
+        loader={async () => {
+          return simulateLoad(400);
+        }}
+      />
+      <Route
         path="predict"
         element={<ImageUpload />}
         loader={async () => {
@@ -48,13 +61,6 @@ const router = createBrowserRouter(
       <Route
         path="/predict/history"
         element={<PrivateRoute element={<History />} />}
-        loader={async () => {
-          return simulateLoad(400);
-        }}
-      />
-      <Route
-        path="about"
-        element={<About />}
         loader={async () => {
           return simulateLoad(400);
         }}

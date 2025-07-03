@@ -3,7 +3,7 @@ import Header from "./Components/Header/Header.jsx";
 import Footer from "./Components/Footer/Footer.jsx";
 import LoadingBar from "react-top-loading-bar";
 import { useState, useEffect } from "react";
-// import LocomotiveScroll from 'locomotive-scroll';
+import LocomotiveScroll from 'locomotive-scroll';
 import ChatBot from "./Components/ChatBot/ChatBot.jsx";
 
 

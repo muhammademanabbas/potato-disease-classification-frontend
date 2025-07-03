@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Assuming react-router-dom is set up for routing
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, User } from "../Icons/Icons";
 import Button from "../Button/Button";
-import { login } from "../../Features/auth/authSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { handleError, handleSuccess } from "../../utils";
 import { setToken } from "../../Token/token";
+import { login } from "../../Features/auth/authSlice";
 
 const Signup = () => {
-  // Renamed from Login to App for standalone preview
   // State variables for form fields
   const [name, setName] = useState(""); // New state for name
   const [email, setEmail] = useState("");
@@ -22,17 +21,11 @@ const Signup = () => {
   // State for loading indicator
   const [isLoading, setIsLoading] = useState(false);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const isLoggedInReduxState = useSelector((state) => state.auth.isLoggedIn);
-
-  useEffect(() => {
-    console.log("Redux isLoggedIn state changed to:", isLoggedInReduxState);
-  }, [isLoggedInReduxState]);
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
     setMessage({ text: "", type: "" }); // Clear previous messages
     setIsLoading(true); // Show loading indicator
 
@@ -59,20 +52,17 @@ const Signup = () => {
         },
         body: JSON.stringify({ name, email, password }),
       });
-      console.log(response)
 
       const result = await response.json();
-      console.log("API Response:", result); // More descriptive console log
 
-      const { success, message, error, Token } = result; // Removed `name` from destructuring as it's already a state variable
+      const { success, message, error, Token } = result;
 
       if (success) {
-        setToken(Token); // If setToken only takes the token
+        setToken(Token, name);
 
         localStorage.setItem("isLoggedIn", "true"); // Directly set localStorage based on successful login
-        dispatch(login(true)); // Dispatch login action with true, indicating user is logged in
         handleSuccess(message || "Registration successful!"); // Provide a default message if API message is missing
-
+        dispatch(login({name,email}))
         setTimeout(() => {
           navigate("/");
            setIsLoading(false);
@@ -264,7 +254,7 @@ const Signup = () => {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="font-medium text-green-700 hover:text-green-800 transition-colors duration-200"
+            className=" text-green-700 hover:text-green-800 transition-colors duration-200 hover:underline"
           >
             Log In Here!
           </Link>
