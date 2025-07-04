@@ -142,6 +142,7 @@
   animation: cooking 1.7s infinite;
 }
 
+
 @keyframes cooking {
   0% {
     transform: rotate(0deg);
@@ -168,7 +169,7 @@
   height: 24px;
   background: linear-gradient(to bottom, rgb(82, 33, 33), rgb(142, 86, 86));
   left: 30px;
-  border-radius: 46%;
+  border-radius: 38%;
   animation: flip 1.7s infinite;
   z-index: 2;
 }
@@ -190,7 +191,7 @@
 .panBase {
   z-index: 3;
   width: 50%;
-  height: 22px;
+  height: 26px;
   border-bottom-left-radius: 40px;
   border-bottom-right-radius: 40px;
   /* background: linear-gradient(to top, rgb(3, 156, 156), rgb(10, 191, 191)); */
