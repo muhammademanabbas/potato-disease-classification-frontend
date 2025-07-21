@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import {FaceBookIcon, TwitterIcon, LinkedinIcon} from "../Icons/Icons"
+import {GitHub, LinkedinIcon, Portfolio} from "../Icons/Icons"
 const Footer = () => {
 
 	 const onActive = (isActive) => {
@@ -54,13 +54,13 @@ const Footer = () => {
           <div className="flex justify-center md:justify-start space-x-4">
             {/* Social Media Icons */}
             <a href="#" aria-label="Facebook" className="text-gray-400 hover:text-green-400 transition-colors duration-200">
-              <FaceBookIcon />
-            </a>
-            <a href="#" aria-label="Twitter" className="text-gray-400 hover:text-green-400 transition-colors duration-200">
-              <TwitterIcon />
+              <GitHub />
             </a>
             <a href="#" aria-label="LinkedIn" className="text-gray-400 hover:text-green-400 transition-colors duration-200">
               <LinkedinIcon />
+            </a>
+            <a href="#" aria-label="LinkedIn" className="text-gray-400 hover:text-green-400 transition-colors duration-200">
+              <Portfolio />
             </a>
           </div>
         </div>

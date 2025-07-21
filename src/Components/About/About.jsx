@@ -81,7 +81,7 @@ function About() {
               <path d="M18 8V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7.5c0 1.6.4 2.1 1.2 2.7l2.4 1.9c.7.6 1.7 1 2.8 1h5.8c1.1 0 2.1-.4 2.8-1l2.4-1.9c.8-.6 1.2-1.1 1.2-2.7V8Z"></path>
               <path d="M10 16a6 6 0 0 0 0-12v12Z"></path>
             </svg>
-            Our Mission
+            Mission
           </h3>
           <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
             Our mission is to provide an accessible, efficient, and reliable

@@ -130,6 +130,16 @@ function Account() {
     }, 700);
   };
 
+  // Actions for Delete Account Modal
+  const confirmDeleteAccount = () => {
+    deleteUserAccount(dispatch);
+    setShowDeleteAccountModal(false);
+    console.log("Account deletion succeeded! Clearing history and navigating.");
+    dispatch(clearUserHistory());
+    handleSuccess("Your account Has been deleted!");
+    navigate("/");
+  };
+
   const cancelLogout = () => {
     console.log("Logout cancelled");
     setShowLogoutModal(false);
@@ -216,15 +226,7 @@ function Account() {
     console.log("Delete Account cancelled");
   };
 
-  // Actions for Delete Account Modal
-  const confirmDeleteAccount = () => {
-    deleteUserAccount(dispatch);
-    setShowDeleteAccountModal(false);
-    console.log("Account deletion succeeded! Clearing history and navigating.");
-    dispatch(clearUserHistory());
-    handleSuccess("Your account Has been deleted!");
-    navigate("/");
-  };
+  
 
   return (
     <div className="bg-white p-6 sm:p-8 mt-[14vh] rounded-xl shadow-lg w-full max-w-xl">
