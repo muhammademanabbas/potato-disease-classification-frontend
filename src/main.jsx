@@ -9,7 +9,7 @@ import {
 import Layout from "./Layout.jsx";
 import Home from "./pages/HomePage/HomePage.jsx";
 import ImageUpload from "./pages/ImageUpload/ImageUpload.jsx";
-import About from "./pages/AboutPAge/AboutPage.jsx";
+import About from "./pages/AboutPage/AboutPage.jsx";
 import AccountPage from "./pages/AccountPage/AccountPage.jsx";
 import PageNotFound from "./pages/NotFoundPage/NotFoundPage.jsx";
 import History from "./pages/HistoryPage/HistoryPage.jsx";
