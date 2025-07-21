@@ -56,9 +56,9 @@ function Account() {
   useEffect(() => {
     // Fetch user profile when the component mounts or when dispatch changes
     // This ensures the data fetching process starts.
-    if (authStatus === "idle" || authStatus === "failed") {
+    // if (authStatus === "idle" || authStatus === "failed") {
       fetchUserProfileManually(dispatch);
-    }
+    // }
   }, []);
 
   useEffect(() => {
